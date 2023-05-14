@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+require base_path('Modules/Payments/Routes/web.php');
+
+
 Route::get('/', function () {
     return view('welcome');
 });
