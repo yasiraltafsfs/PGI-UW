@@ -1,23 +1,20 @@
 <?php
+
 namespace Modules\Payments\Factories;
-use Modules\Payments\Services\Strpe;
-use Modules\Payments\Contacts\PaymentGatewayContract;
 
+use Modules\Payments\Contracts\PaymentGatewayContract;
+use Modules\Payments\Services\StripePaymentGateway;
 
-class PaymentGatewayFatory 
+class PaymentGatewayFactory
 {
-    public function getPaymentGateWay($gateway):PaymentGatewayContract{
+    public static function create($gateway)
+    {
         switch ($gateway) {
             case 'stripe':
-                return new Strpe; 
-                break;
-            case 'stripe':
-                return new Strpe; 
-                break;
+                return new StripePaymentGateway();
+            // Add cases for other payment gateways if needed
             default:
-                return "Select A Payment Gateway";
-                break;
+                throw new \InvalidArgumentException("Unsupported payment gateway: $gateway");
         }
     }
-    
 }

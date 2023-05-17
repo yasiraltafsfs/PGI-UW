@@ -12,9 +12,10 @@
 */
 
 Route::prefix('payments')->group(function() {
-    Route::get('/', 'PaymentsController@index')->name('methods');
-    Route::get('/refunds', 'GatewayController@refunds')->name('refunds');
-    Route::get('/transactions', 'GatewayController@transactions')->name('transactions');
-    Route::get('/create/method', 'GatewayController@createMethod')->name('create-method');
+    Route::get('/', 'PaymentController@index')->name('methods');
+    Route::get('/refunds', 'PaymentController@refunds')->name('refunds');
+    Route::get('/transactions', 'PaymentController@transactions')->name('transactions');
+    Route::get('/create/method', 'PaymentController@addPaymentMethod')->name('create-method');
+    Route::post('/create/method', 'PaymentController@addPaymentMethod')->name('create-method');
 
 });

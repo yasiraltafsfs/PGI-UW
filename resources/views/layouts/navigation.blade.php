@@ -38,7 +38,7 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
-                        <x-dropdown-link :href="route('payments')">
+                        <x-dropdown-link :href="route('methods')">
                             {{ __('Payments') }}
                         </x-dropdown-link>
 

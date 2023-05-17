@@ -27,12 +27,12 @@
     </div>
     <div class="row mt-5">
       <div class="col-12">
-      <button class="btn btn-primary" style="float: right">+ Add Payment Method</button>
-
+        <a class="btn btn-primary" style="float: right" href="{{route('create-method')}}">
+          + Add Payment Method
+        </a>
       </div>
     </div>
     <div class="row">
-        
         <div class="col-12">
           <table class="table table-bordered table-hover mt-2">
             <thead class="thead-dark"> 
@@ -53,13 +53,20 @@
                   <span class="badge badge-primary">default</span>
                   <span class="badge badge-success">Active</span>
                 </td>
-                <td>
-                  <a href="">
-                    <i class="fa fa-trash"></i>
+                <td style="text-align: center">
+                  <a href="#" style="color:#000; "> 
+                 
                   </a>
-                  <a href="">
-                    <i class="fa fa-edit"></i>
-                  </a>
+                  <div class="btn-group">
+                    <i class="fa fa-ellipsis-v " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="#">Remove default</a>
+                      {{-- <a class="dropdown-item" href="#">Another action</a>
+                      <a class="dropdown-item" href="#">Something else here</a> --}}
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Remove Method</a>
+                    </div>
+                  </div>
                 </td>
               </tr>
             </tbody>

@@ -5,6 +5,10 @@ namespace Modules\Payments\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 
+use Modules\Payments\Contracts\PaymentGatewayContract;
+use Modules\Payments\Repositories\PaymentRepository;
+use Modules\Payments\Services\StripePaymentGateway;
+
 class PaymentsServiceProvider extends ServiceProvider
 {
     /**
@@ -29,7 +33,14 @@ class PaymentsServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
     }
-
+    
+    public function registerBindings()
+    {
+        $this->app->bind(PaymentGatewayContract::class, StripePaymentGateway::class);
+        $this->app->bind(PaymentRepository::class, function ($app) {
+            return new PaymentRepository($app->make(PaymentGatewayContract::class));
+        });
+    }
     /**
      * Register the service provider.
      *
@@ -37,6 +48,7 @@ class PaymentsServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerBindings();
         $this->app->register(RouteServiceProvider::class);
     }
 
