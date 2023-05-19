@@ -10,6 +10,7 @@
         <script src="https://js.stripe.com/v3/"></script>
     </head>
     <body>
+        
         @yield('content')
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"  ></script>

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Payments\Entities\PaymentMethod;
 
 class User extends Authenticatable
 {
@@ -42,4 +43,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function defaultPaymentMethod(){
+        return $this->hasOne(PaymentMethod::class)->where('is_default',true);
+    }
 }

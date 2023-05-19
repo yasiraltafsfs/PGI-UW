@@ -2,7 +2,6 @@
 
 namespace Modules\Payments\Factories;
 
-use Modules\Payments\Contracts\PaymentGatewayContract;
 use Modules\Payments\Services\StripePaymentGateway;
 
 class PaymentGatewayFactory

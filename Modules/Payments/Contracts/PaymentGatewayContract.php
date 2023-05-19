@@ -6,19 +6,19 @@ interface PaymentGatewayContract
 {
     public function addPaymentMethod($customerId, $paymentMethodToken);
 
-    public function charge($customerId, $paymentMethodToken, $amount);
+    public function charge($customerId, $pmId, $amount);
 
-    public function voidTransaction($transactionId);
+    // public function voidTransaction($transactionId);
 
     public function refundTransaction($transactionId);
 
     public function saveCustomerProfile($customerId, $profileData);
-
+    
     public function updateCustomerProfile($customerId, $profileData);
 
-    public function setDefaultPaymentMethod($customerId, $paymentMethodToken);
+    public function setDefaultPaymentMethod($customerId, $pmId);
 
-    public function unsetDefaultPaymentMethod($customerId, $paymentMethodToken);
+    public function unsetDefaultPaymentMethod($customerId);
 
     public function checkCustomerProfile($customerId);
 

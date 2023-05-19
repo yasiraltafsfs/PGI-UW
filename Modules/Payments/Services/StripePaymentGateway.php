@@ -14,29 +14,44 @@ class StripePaymentGateway implements PaymentGatewayContract
     public function __construct()
     {
         // Initialize Stripe with your API key
-        Stripe::setApiKey(config('services.stripe.secret'));
+        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
     }
 
-    public function addPaymentMethod($customerId, $paymentMethodToken)
+    public function fetchCustomer($customerId){
+        return Customer::retrieve(['id'=>$customerId]);
+    }
+
+    public function createCustomer($name,$email)
     {
-        $paymentMethod = PaymentMethod::retrieve($paymentMethodToken);
-        $paymentMethod->attach(['customer' => $customerId]);
+        $data = [
+            'name' => $name,
+            'email' => $email,
+        ];
+        return Customer::create($data);
     }
 
-    public function charge($customerId, $paymentMethodToken, $amount)
+    public function addPaymentMethod($customerID,$token){
+        $customer = $this->fetchCustomer($customerID);
+        $card = $customer->createSource(
+                        $customerID,
+                        ['source' => $token]
+                    );
+        return $card;
+    }
+
+    public function charge($customerId, $pmId, $amount)
     {
         $charge = Charge::create([
             'customer' => $customerId,
-            'payment_method' => $paymentMethodToken,
+            'source' => $pmId,
             'amount' => $amount,
             'currency' => 'usd',
-            'confirmation_method' => 'automatic',
-            'confirm' => true,
-            'fraud_details' => [
-                'user_report' => 'safe', // Implement your fraud detection logic here
-            ],
+            // 'confirmation_method' => 'automatic',
+            // 'confirm' => true,
+            // 'fraud_details' => [
+            //     'user_report' => 'safe', // Implement your fraud detection logic here
+            // ],
         ]);
-
         return $charge;
     }
 
@@ -67,18 +82,18 @@ class StripePaymentGateway implements PaymentGatewayContract
         return $customer;
     }
 
-    public function setDefaultPaymentMethod($customerId, $paymentMethodToken)
+    public function setDefaultPaymentMethod($customerId, $pmId)
     {
         $customer = Customer::update($customerId, [
             'invoice_settings' => [
-                'default_payment_method' => $paymentMethodToken,
+                'default_payment_method' => $pmId,
             ],
         ]);
         
         return $customer;
     }
 
-    public function unsetDefaultPaymentMethod($customerId, $paymentMethodToken)
+    public function unsetDefaultPaymentMethod($customerId)
     {
         $customer = Customer::update($customerId, [
             'invoice_settings' => [

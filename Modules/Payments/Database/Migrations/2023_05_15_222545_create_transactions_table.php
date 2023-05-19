@@ -19,9 +19,12 @@ return new class extends Migration
             $table->unsignedBigInteger('payment_method_id');
             $table->string('transaction_id');
             $table->decimal('amount', 8, 2);
+            $table->enum('status',['completed','failed','refunded']);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods')->onDelete('cascade');
+            $table->softDeletes();
+
         });
     }
     

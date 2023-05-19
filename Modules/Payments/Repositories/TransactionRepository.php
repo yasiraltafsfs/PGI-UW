@@ -2,24 +2,21 @@
 
 namespace Modules\Payments\Repositories;
 
-use Modules\Payments\Models\Transaction;
+use Modules\Payments\Entities\Transaction;
+use Modules\Payments\Entities\PaymentMethod;
+use Modules\Payments\Contracts\TransactionContract;
 
-class TransactionRepository
+class TransactionRepository implements TransactionContract
 {
-    public function create(array $data)
+    public function create($data)
     {
         return Transaction::create($data);
     }
 
-    public function update(Transaction $transaction, array $data)
+    public function update(Transaction $transaction,$data)
     {
         $transaction->update($data);
         return $transaction;
-    }
-
-    public function delete(Transaction $transaction)
-    {
-        $transaction->delete();
     }
 
     public function getById($transactionId)
@@ -27,8 +24,14 @@ class TransactionRepository
         return Transaction::findOrFail($transactionId);
     }
 
-    public function getByUserId($userId)
+    public function getAll()
     {
-        return Transaction::where('user_id', $userId)->get();
+        return Transaction::userSpecific()->get();
     }
+
+    public function getDefaultMethod()
+    {
+        return PaymentMethod::userSpecific()->where('is_default',true)->first();
+    }
+
 }

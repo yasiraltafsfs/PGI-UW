@@ -41,87 +41,40 @@
     </div>
     <div class="row"> 
         <div class="col-12">
-          <div id="bank-account-element">
-          <form action="{{route('add-method')}}" method="post" id="payment-form">
+            <h1>Create Charge</h1>
+            @if(!empty($is_default))
+          <form action="{{route('create-charge')}}" method="post" id="payment-form" style="padding:20px;background-color:antiquewhite">
             @csrf
             <div class="row">
-              <div class="col-6">
+              <!-- <div class="col-6">
                 <div class="form-group">
                   <label for="exampleFormControlSelect1">Select Gateway</label>
                   <select class="form-control" name="gateway" id="gateway" required>
                     <option disabled selected>Select</option>
                     <option value="stripe">Stripe</option>
+                    <option value="authorize">Authorize</option>
                   </select>
                 </div>
-              </div>
+              </div> -->
               <div class="col-6">
                 <div class="form-group">
-                  <label for="exampleFormControlSelect1">Select Method</label>
-                  <select class="form-control" name="method" id="method" required>
-                    <option disabled selected>Select</option>
-                    <option value="cc">CC</option>
-                    <option value="ach">ACH</option>
-                  </select>
+                  <label for="exampleFormControlSelect1">Enter You Amount($)</label>
+                    <input class="form-control" type="number" name="amount" required placeholder="enter amount to charge" />
                 </div>
               </div>
-            </div>
-            <div class="col-12">
-         
-             
-                  <div id="card-element"></div>
-              
-             
-            </div>
-            <br>
-          </div>
-          <input type="hidden" name="token" id="token" value=""/>
+              <div class="col-12">
+                <button  type="submit"  class="btn btn-success">Charge Now</button>
+              </div>
 
-            <div id=""></div>
-            <button type="submit"  class="btn btn-primary">Submit</button>
+            </div>
+
           </form>
-          </div>
+          @else
+                <a class="btn btn-lg btn-primary" href="{{route('methods')}}"> Add Default Method First</a>
+          @endif
         </div> 
 
     </div>
 </div> 
 
-<script>
-  const stripe = Stripe('pk_test_51IIYfPJdut7eHw2Mhsy6bgCiMJhk52KrZ02wXljQBJl3Shd19dZOWg2J6LPmUdgbYnVJRNqsYmYWsQBxFnGjNbei00Gbc992eQ');
-
-  var elements = stripe.elements();
-    var cardElement = elements.create('card');
-
-    cardElement.mount('#card-element');
-
-
-  var form = document.getElementById('payment-form');
-
-  form.addEventListener('submit', function(event) {
-  var gateway =   document.getElementById('gateway').value;
-  var method =   document.getElementById('method').value;
-  if(gateway == null || gateway == ""){
-      alert('select gatway first');
-  }
-  if(method == null || method == ""){
-      alert('select method first');
-  }else{
-    event.preventDefault();
-
-stripe.createToken(cardElement).then(function(result) {
-    if (result.error) {
-        // Handle error
-        console.error(result.error.message);
-    } else {
-        // Token successfully obtained
-        var token = result.token;
-        // You can now send the token to your server for further processing
-        console.log(token.id);
-        document.getElementById('token').value= token.id;
-        form.submit();
-    }
-});
-  }
-      
-  });
-</script>
 @endsection
