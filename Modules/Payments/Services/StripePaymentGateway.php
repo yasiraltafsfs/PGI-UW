@@ -8,6 +8,7 @@ use Stripe\Customer;
 use Stripe\PaymentMethod;
 use Stripe\Charge;
 use Stripe\Refund;
+use Stripe\Exception\CardException;
 
 class StripePaymentGateway implements PaymentGatewayContract
 {
@@ -41,6 +42,7 @@ class StripePaymentGateway implements PaymentGatewayContract
 
     public function charge($customerId, $pmId, $amount)
     {
+
         $charge = Charge::create([
             'customer' => $customerId,
             'source' => $pmId,
@@ -52,6 +54,9 @@ class StripePaymentGateway implements PaymentGatewayContract
             //     'user_report' => 'safe', // Implement your fraud detection logic here
             // ],
         ]);
+        if(!$charge){
+            throw new CardException($e->getError()->message);       
+        }
         return $charge;
     }
 

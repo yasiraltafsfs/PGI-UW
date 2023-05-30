@@ -35,40 +35,29 @@
             <tr>
               <th>Gateway Name</th>
               <th>Method <small>( CC/ACH )</small></th>
-              <th>Description</th>
-              <th>Transaction Date</th>
+              <th>RefundID</th>
+              <th>created_at</th>
               <th>Status</th>
-              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             @if(count($refunds) > 0)
-              @foreach ($refunds as $item)
+              @foreach ($refunds as $refund)
               <tr>
-                <td>PayPal</td>
-                <td>CC  </td>
-                <td>Online payment system</td>
+                <td>{{$refund->paymentMethod->paymentGateway->gateway_name}}</td>
+                <td>{{$refund->paymentMethod->payment_method}}</td>
+                <td>{{$refund->refund_id}}</td>
                 <td>
-                  <span class="badge badge-primary">default</span>
-                  <span class="badge badge-success">Active</span>
+                  <!-- <span class="badge badge-primary">default</span>
+                  <?php
+               $date = new DateTime($refund->created_at);
+               $formattedDate = $date->format('d-m-Y');
+                ?>
+                  <span class="badge badge-success">Active</span> -->
+                  {{$formattedDate}}
                 </td>
                 <td>
-                  43434
-                </td>
-                <td style="text-align: center">
-                  <a href="#" style="color:#000; "> 
-                 
-                  </a>
-                  <div class="btn-group">
-                    <i class="fa fa-ellipsis-v " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#">Remove default</a>
-                      {{-- <a class="dropdown-item" href="#">Another action</a>
-                      <a class="dropdown-item" href="#">Something else here</a> --}}
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Remove Method</a>
-                    </div>
-                  </div>
+                {{$refund->status}}
                 </td>
               </tr>
               @endforeach

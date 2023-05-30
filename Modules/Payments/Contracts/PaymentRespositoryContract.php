@@ -14,12 +14,13 @@ interface PaymentRespositoryContract
     public function setDefaultPaymentMethod($id);
     public function unsetDefaultPaymentMethod($id);
     public function removeMethod($id);
+    public function refundTransaction($id);
+
 
     // public function charge($customerId, $paymentMethodToken, $amount);
 
     // // public function voidTransaction($transactionId);
 
-    // public function refundTransaction($transactionId);
 
     // public function saveCustomerProfile($customerId, $profileData);
 

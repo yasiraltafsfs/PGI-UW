@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('payment_method_id');
-            $table->string('transaction_id');
+            $table->string('refund_id');
             $table->enum('status',['pending','completed','failed']);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

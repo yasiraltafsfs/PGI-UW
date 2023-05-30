@@ -9,10 +9,12 @@ class Refund extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = ['user_id','status','payment_method_id','refund_id'];
     
-    // protected static function newFactory()
-    // {
-    //     return \Modules\Payments\Database\factories\RefundFactory::new();
-    // }
+    public function paymentMethod(){
+        return $this->belongsTo(PaymentMethod::class);
+        
+    }
+
+
 }

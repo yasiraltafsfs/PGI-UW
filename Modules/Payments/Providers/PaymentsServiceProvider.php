@@ -11,6 +11,9 @@ use Modules\Payments\Repositories\PaymentRepository;
 use Modules\Payments\Contracts\TransactionContract;
 use Modules\Payments\Repositories\TransactionRepository;
 
+use Modules\Payments\Contracts\RefundRepositoryContract;
+use Modules\Payments\Repositories\RefundRepository;
+
 
 class PaymentsServiceProvider extends ServiceProvider
 {
@@ -41,6 +44,7 @@ class PaymentsServiceProvider extends ServiceProvider
     {
         $this->app->bind(PaymentRespositoryContract::class, PaymentRepository::class);
         $this->app->bind(TransactionContract::class, TransactionRepository::class);
+        $this->app->bind(RefundRepositoryContract::class, RefundRepository::class);
         // $this->app->bind(PaymentRepository::class, function ($app) {
         //     return new PaymentRepository($app->make(PaymentGatewayContract::class));
         // });

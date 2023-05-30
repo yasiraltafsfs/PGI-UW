@@ -47,24 +47,26 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        $gateway_name = auth()->user()->defaultPaymentMethod->paymentGateway->gateway_name;
-        $customerId = auth()->user()->defaultPaymentMethod->paymentGateway->gateway_id;
-        $pmId = auth()->user()->defaultPaymentMethod->payment_method_id;
-        $amount = $request->amount;
-        $gateway_obj = factory::create($gateway_name);
-        $charge = $gateway_obj->charge( $customerId,$pmId,$amount);
-            $payload = [
-                'user_id'           =>  auth()->user()->id,
-                'payment_method_id' =>  auth()->user()->defaultPaymentMethod->id,
-                'transaction_id'    =>  $charge->balance_transaction,
-                'amount'            =>  $charge->amount,
-                'status'            =>  $charge->status == 'succeeded' ? 'completed' : 'failed'
-            ];
-            $this->transactionRepository->create($payload);
-        if($charge->status == 'succeeded'){
-            return redirect()->route('transactions')->with('success', 'Payment '.$amount.' charged  successfully');
-        }else{
-            return redirect()->back()->with('error', 'something went wrong');
+        try {
+            $gateway_name = auth()->user()->defaultPaymentMethod->paymentGateway->gateway_name;
+            $customerId = auth()->user()->defaultPaymentMethod->paymentGateway->gateway_id;
+            $pmId = auth()->user()->defaultPaymentMethod->payment_method_id;
+            $amount = $request->amount;
+            $gateway_obj = factory::create($gateway_name);
+            $charge = $gateway_obj->charge( $customerId,$pmId,$amount);
+                $payload = [
+                    'user_id'           =>  auth()->user()->id,
+                    'payment_method_id' =>  auth()->user()->defaultPaymentMethod->id,
+                    'transaction_id'    =>  $charge->id,
+                    'amount'            =>  $charge->amount,
+                    'status'            =>  $charge->status == 'succeeded' ? 'completed' : 'failed'
+                ];
+                $this->transactionRepository->create($payload);
+            if($charge->status == 'succeeded'){
+                return redirect()->route('transactions')->with('success', 'Payment '.$amount.' charged  successfully');
+            }
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
     }
 }

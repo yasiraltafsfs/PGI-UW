@@ -13,7 +13,8 @@
 Route::middleware('auth')->group(function () {
 Route::prefix('payments')->group(function() {
     Route::get('/', 'PaymentController@index')->name('methods');
-    Route::get('/refunds', 'PaymentController@refunds')->name('refunds');
+    Route::get('/refunds', 'RefundController@index')->name('refunds');
+    Route::get('/create/refund{id}', 'RefundController@store')->name('create-refund');
     Route::get('/transactions', 'TransactionController@index')->name('transactions');
     Route::get('/transactions/create/charge', 'TransactionController@create')->name('transactions-create');
     Route::post('/create/charge', 'TransactionController@store')->name('create-charge');

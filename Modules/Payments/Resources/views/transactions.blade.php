@@ -80,6 +80,9 @@
             <td>
               @if($transaction->status=='completed')
               <span class="badge badge-success">completed</span>
+              @elseif($transaction->status=='refunded')
+              <span class="badge badge-primary">Refunded</span>
+
               @else
               <span class="badge badge-danger">Failed</span>
 
@@ -93,7 +96,7 @@
                 <i class="fa fa-ellipsis-v " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
               @if($transaction->status=='completed')
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Refund</a>
+                  <a class="dropdown-item" href="{{route('create-refund',['id'=>$transaction->id])}}">Refund</a>
                 </div>
               @endif
               </div>

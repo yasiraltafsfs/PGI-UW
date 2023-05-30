@@ -18,8 +18,14 @@ class PaymentController extends Controller
 
     public function index()
     {
-        $methods = $this->paymentRepository->getPaymentMethods();
-        return view('payments::index',['methods'=>$methods]);
+        try {
+                $methods = $this->paymentRepository->getPaymentMethods();
+                return view('payments::index',['methods'=>$methods]);
+                
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+        
     }
 
     public function refunds(Request $request){
