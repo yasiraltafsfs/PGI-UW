@@ -17,7 +17,11 @@ class RefundRepository implements RefundRepositoryContract
             $transaction->status = 'refunded';
             $transaction->save();
         }
-        return Refund::create($data);
+        $refund =  Refund::create($data);
+        if($refund->status !='succeeded'){
+            return throw new Exception("refund error", 1);
+            
+        }
 
     }
 

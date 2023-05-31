@@ -23,7 +23,7 @@ class PaymentRepository implements PaymentRespositoryContract
     }
 
     public function getCustomerId($gateway){
-        return PaymentGateway::select('gateway_id')->where('gateway_name',$gateway)->userSpecific()->latest()->first();
+        return PaymentGateway::select('gateway_id')->where('gateway_name',$gateway)->userSpecific()->latest()->firstOrFail();
     }
 
     public function createCustomer($data){

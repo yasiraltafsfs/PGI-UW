@@ -48,7 +48,7 @@ class RefundController extends Controller
      */
     public function store($id)
     {
-        // try {
+        try {
             // make refund on gate way
                 
                 $transaction  = $this->refundRepository->getById($id);
@@ -68,9 +68,9 @@ class RefundController extends Controller
                     return redirect()->route('transactions')->with('error', 'Not refunded');
                 }
 
-        // } catch (\Exception $e) {
-        //     return $e->getMessage();
-        // }
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
         
     }
 

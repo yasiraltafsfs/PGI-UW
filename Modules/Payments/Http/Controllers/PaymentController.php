@@ -46,15 +46,21 @@ class PaymentController extends Controller
             'gateway' => 'required',
             'method' => 'required',
         ]);
-        // get appropriate customer id
-        $customerId = $this->getCustomerId($request->gateway,$request->method);
-        // Add the payment method
-        $gateway_object = factory::create($request->gateway);
-        $method =  $gateway_object->addPaymentMethod($customerId,$request->token);
-        $payment_gateway_id = $this->paymentRepository->getPaymentGatewayId($customerId);
-        $payload = ['user_id'=>auth()->user()->id,'payment_gateway_id'=>$payment_gateway_id,'payment_method'=>$request->method,'payment_method_id'=>$method->id];
-        $paymentMethod = $this->paymentRepository->addPaymentMethod($payload);
-        return redirect()->route('methods')->with('success', 'Payment method added successfully');
+        try {
+            // get appropriate customer id
+            $customerId = $this->getCustomerId($request->gateway,$request->method);
+            // return respons()->json(['status' =>200, 'customerId' =>$customerId]);
+            // Add the payment method
+            $gateway_object = factory::create($request->gateway);
+            $method =  $gateway_object->addPaymentMethod($customerId,$request->token);
+            $payment_gateway_id = $this->paymentRepository->getPaymentGatewayId($customerId);
+            $payload = ['user_id'=>auth()->user()->id,'payment_gateway_id'=>$payment_gateway_id,'payment_method'=>$request->method,'payment_method_id'=>$method->id];
+            $paymentMethod = $this->paymentRepository->addPaymentMethod($payload);
+            return redirect()->route('methods')->with('success', 'Payment method added successfully');
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+ 
     }
     public function getCustomerId($gateway){
         $customerId = $this->paymentRepository->getCustomerId($gateway);

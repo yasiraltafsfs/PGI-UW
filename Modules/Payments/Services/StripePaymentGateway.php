@@ -37,6 +37,9 @@ class StripePaymentGateway implements PaymentGatewayContract
                         $customerID,
                         ['source' => $token]
                     );
+        if(!$card){
+            throw new CardException($e->getError()->message);       
+        }
         return $card;
     }
 
